@@ -4,4 +4,5 @@
     <string name="btn_start">Start</string>
     <string name="btn_stop">Stop</string>
     <string name="tv_result">Result</string>
+    <string name="audio_classifier_failed">Audio Classifier failed to initialize. See error logs for details</string>
 </resources>
