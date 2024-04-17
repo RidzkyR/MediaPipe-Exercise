@@ -5,7 +5,6 @@ import android.media.AudioFormat
 import android.media.AudioRecord
 import android.os.SystemClock
 import android.util.Log
-import com.google.mediapipe.formats.proto.ClassificationProto.Classification
 import com.google.mediapipe.tasks.audio.audioclassifier.AudioClassifier
 import com.google.mediapipe.tasks.audio.audioclassifier.AudioClassifierResult
 import com.google.mediapipe.tasks.audio.core.RunningMode
@@ -18,13 +17,13 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
 class AudioClassifierHelper(
-    val threshold: Float = 0.1f,
-    val maxResult: Int = 3,
-    val modelName: String = "yamnet.tflite",
-    val runningMode: RunningMode = RunningMode.AUDIO_STREAM,
-    val overlap: Float = 0.5f,
-    val context: Context,
-    val classifierListener: ClassifierListener? = null,
+    private val threshold: Float = 0.1f,
+    private val maxResult: Int = 3,
+    private val modelName: String = "yamnet.tflite",
+    private val runningMode: RunningMode = RunningMode.AUDIO_STREAM,
+    private val overlap: Float = 0.5f,
+    private val context: Context,
+    private val classifierListener: ClassifierListener? = null,
 ) {
     private var audioClassifier: AudioClassifier? = null
     private var recorder: AudioRecord? = null
@@ -108,6 +107,13 @@ class AudioClassifierHelper(
 
         val inferenceTime = SystemClock.uptimeMillis()
         audioClassifier?.classifyAsync(audioData, inferenceTime)
+    }
+
+    fun stopAudioClassification() {
+        executor?.shutdownNow()
+        audioClassifier?.close()
+        audioClassifier = null
+        recorder?.stop()
     }
 
     private fun streamAudioResultListener(resultListener: AudioClassifierResult) {
