@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Audio-Classifier</string>
+    <string name="tv_tittle">Audio Classification</string>
+    <string name="btn_start">Start</string>
+    <string name="btn_stop">Stop</string>
+    <string name="tv_result">Result</string>
 </resources>
