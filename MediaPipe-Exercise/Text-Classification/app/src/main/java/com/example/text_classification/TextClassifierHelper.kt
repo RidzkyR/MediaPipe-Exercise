@@ -28,6 +28,7 @@ class TextClassifierHelper(
             val baseOptionBuilder = BaseOptions.builder().setModelAssetPath(modelName)
             optionBuilder.setBaseOptions(baseOptionBuilder.build())
 
+            textClassifier = TextClassifier.createFromOptions(context, optionBuilder.build())
         } catch (e: IllegalStateException) {
             classifierListener?.onError(context.getString(R.string.text_classifier_failed))
             Log.e(TAG, e.message.toString())
@@ -50,15 +51,15 @@ class TextClassifierHelper(
         }
     }
 
+    companion object {
+        private const val TAG = "TextClassifierHelper"
+    }
+
     interface ClassifierListener {
         fun onError(error: String)
         fun onResults(
             results: List<Classifications>?,
             inferenceTime: Long,
         )
-    }
-
-    companion object {
-        private const val TAG = "TextClassifierHelper"
     }
 }
