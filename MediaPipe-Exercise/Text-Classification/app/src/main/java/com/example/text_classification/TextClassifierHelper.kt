@@ -9,9 +9,9 @@ import com.google.mediapipe.tasks.text.textclassifier.TextClassifier
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
 class TextClassifierHelper(
-    val modelName: String = "bert_classifier.tflite",
+    private val modelName: String = "bert_classifier.tflite",
     val context: Context,
-    val classifierListener: ClassifierListener? = null,
+    val classifierListener: ClassifierListener? = null
 ) {
     private var textClassifier: TextClassifier? = null
     private var executor: ScheduledThreadPoolExecutor? = null
@@ -43,17 +43,17 @@ class TextClassifierHelper(
 
         executor?.execute{
             var inferenceTime = SystemClock.uptimeMillis()
-            val result = textClassifier?.classify(inputText)
+            val results = textClassifier?.classify(inputText)
             inferenceTime = SystemClock.uptimeMillis() - inferenceTime
 
-            classifierListener?.onResult(result?.classificationResult()?.classifications(),inferenceTime)
+            classifierListener?.onResults(results?.classificationResult()?.classifications(),inferenceTime)
         }
     }
 
     interface ClassifierListener {
         fun onError(error: String)
-        fun onResult(
-            result: List<Classifications>?,
+        fun onResults(
+            results: List<Classifications>?,
             inferenceTime: Long,
         )
     }

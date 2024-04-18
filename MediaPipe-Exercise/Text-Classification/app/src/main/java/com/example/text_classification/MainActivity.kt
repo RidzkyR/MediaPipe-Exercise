@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        //implemenrtasi helper
+        //implementasi helper
         val textClassifierHelper = TextClassifierHelper(
             context = this,
             classifierListener = object : TextClassifierHelper.ClassifierListener {
@@ -32,16 +32,16 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this@MainActivity, error, Toast.LENGTH_SHORT).show()
                 }
 
-                override fun onResult(result: List<Classifications>?, inferenceTime: Long) {
+                override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
                     runOnUiThread {
-                        result?.let {
+                        results?.let { it ->
                             if (it.isNotEmpty() && it[0].categories().isNotEmpty()) {
                                 println(it)
                                 val sortedCategories =
                                     it[0].categories().sortedByDescending { it?.score() }
 
                                 val displayResult = sortedCategories.joinToString("\n") {
-                                    "${it.categoryName()}" + NumberFormat.getPercentInstance()
+                                    it.categoryName() + NumberFormat.getPercentInstance()
                                         .format(it.score()).trim()
                                 }
                                 binding.tvResult.text = displayResult
